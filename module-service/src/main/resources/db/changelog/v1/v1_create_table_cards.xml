@@ -1,0 +1,44 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="v1-2" author="Ryazantsev Dmitry">
+        <preConditions onFail="HALT">
+            <not>
+                <tableExists tableName="cards"/>
+            </not>
+            <tableExists tableName="learning_modules"/>
+        </preConditions>
+
+        <createTable tableName="cards">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="term" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="definition" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="learning_module_id" type="UUID">
+                <constraints nullable="false"
+                             foreignKeyName="cards_learning_module_id_learning_modules_id"
+                             references="learning_modules(id)"
+                             deleteCascade="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
