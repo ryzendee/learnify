@@ -9,10 +9,11 @@ import org.testcontainers.utility.DockerImageName;
 @TestConfiguration(proxyBeanMethods = false)
 class TestcontainersConfiguration {
 
+    private static final String POSTGRE_IMAGE = "postgres:15.6";
     @Bean
     @ServiceConnection
     PostgreSQLContainer<?> postgresContainer() {
-        return new PostgreSQLContainer<>(DockerImageName.parse("postgres:latest"));
+        return new PostgreSQLContainer<>(DockerImageName.parse(POSTGRE_IMAGE));
     }
 
 }
