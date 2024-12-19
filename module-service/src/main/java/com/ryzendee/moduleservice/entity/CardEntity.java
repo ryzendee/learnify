@@ -12,7 +12,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Card {
+public class CardEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -21,5 +21,5 @@ public class Card {
     private String definition;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private LearningModule learningModule;
+    private LearningModuleEntity learningModuleEntity;
 }

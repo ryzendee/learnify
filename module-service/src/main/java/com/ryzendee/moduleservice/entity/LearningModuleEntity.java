@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LearningModule {
+public class LearningModuleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -29,10 +29,10 @@ public class LearningModule {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
-    private List<Card> cardList = new ArrayList<>();
+    private List<CardEntity> cardEntityList = new ArrayList<>();
 
-    public void addCard(Card card) {
-        cardList.add(card);
-        card.setLearningModule(this);
+    public void addCard(CardEntity cardEntity) {
+        cardEntityList.add(cardEntity);
+        cardEntity.setLearningModuleEntity(this);
     }
 }
