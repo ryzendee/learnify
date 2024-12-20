@@ -15,7 +15,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
-
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 public class LearningModuleEntity {
@@ -26,6 +26,7 @@ public class LearningModuleEntity {
     private String name;
     private String description;
 
+    @EqualsAndHashCode.Exclude
     @Builder.Default
     @OneToMany(
             mappedBy = "learningModuleEntity",
