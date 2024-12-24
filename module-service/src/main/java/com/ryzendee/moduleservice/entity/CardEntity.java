@@ -13,6 +13,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 public class CardEntity {
@@ -23,6 +24,7 @@ public class CardEntity {
     private String term;
     private String definition;
 
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "learning_module_id")
     private LearningModuleEntity learningModuleEntity;
