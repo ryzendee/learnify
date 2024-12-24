@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.PropertyReferenceException;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.UUID;
@@ -33,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@ActiveProfiles("test")
 @Import({TestConfig.class, TestcontainersConfiguration.class})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class CardServiceDbIT {
@@ -95,7 +97,8 @@ public class CardServiceDbIT {
 
         // Assert
         var updatedEntity = testDatabaseFacade.find(preparedCardEntity.getId(), CardEntity.class);
-        assertThat(updatedEntity).isEqualTo(preparedCardEntity);
+        assertThat(updatedEntity.getTerm()).isEqualTo(updateRequest.term());
+        assertThat(updatedEntity.getDefinition()).isEqualTo(updateRequest.definition());
         assertThat(updatedEntity.getUpdatedAt()).isNotNull();
     }
 

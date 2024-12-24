@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.PropertyReferenceException;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.UUID;
@@ -30,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@ActiveProfiles("test")
 @Import({TestConfig.class, TestcontainersConfiguration.class})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class LearningModuleServiceDbIT {
@@ -81,7 +83,8 @@ public class LearningModuleServiceDbIT {
 
         // Assert
         var updatedEntity = testDatabaseFacade.find(preparedEntity.getId(), LearningModuleEntity.class);
-        assertThat(updatedEntity).isEqualTo(preparedEntity);
+        assertThat(updatedEntity.getName()).isEqualTo(updateRequest.name());
+        assertThat(updatedEntity.getDescription()).isEqualTo(updateRequest.description());
         assertThat(updatedEntity.getUpdatedAt()).isNotNull();
     }
 
