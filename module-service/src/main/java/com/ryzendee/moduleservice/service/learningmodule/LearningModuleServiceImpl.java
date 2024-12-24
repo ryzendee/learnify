@@ -7,7 +7,6 @@ import com.ryzendee.moduleservice.entity.LearningModuleEntity;
 import com.ryzendee.moduleservice.exception.LearningModuleNotFoundException;
 import com.ryzendee.moduleservice.mapper.learningmodule.LearningModuleCreateRequestMapper;
 import com.ryzendee.moduleservice.mapper.learningmodule.LearningModuleEntityMapper;
-import com.ryzendee.moduleservice.mapper.learningmodule.LearningModuleUpdateRequestMapper;
 import com.ryzendee.moduleservice.repository.LearningModuleJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,6 @@ public class LearningModuleServiceImpl implements LearningModuleService {
     private final LearningModuleJpaRepository learningModuleJpaRepository;
 
     private final LearningModuleCreateRequestMapper moduleCreateRequestMapper;
-    private final LearningModuleUpdateRequestMapper moduleUpdateRequestMapper;
     private final LearningModuleEntityMapper moduleEntityMapper;
 
     @Transactional
@@ -43,11 +41,12 @@ public class LearningModuleServiceImpl implements LearningModuleService {
     @Override
     public LearningModuleResponse updateLearningModuleById(UUID id, LearningModuleUpdateRequest request) {
         LearningModuleEntity entity = getLearningModuleEntityById(id);
-        LearningModuleEntity updatedEntity = moduleUpdateRequestMapper.map(request, entity);
-        learningModuleJpaRepository.save(updatedEntity);
-        log.info("Learning module was updated, id: {}", updatedEntity.getId());
+        entity.setName(request.name());
+        entity.setDescription(request.description());
+        learningModuleJpaRepository.save(entity);
+        log.info("Learning module was updated, id: {}", entity.getId());
 
-        return moduleEntityMapper.map(updatedEntity);
+        return moduleEntityMapper.map(entity);
     }
 
     @Transactional

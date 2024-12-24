@@ -7,7 +7,6 @@ import com.ryzendee.moduleservice.exception.CardNotFoundException;
 import com.ryzendee.moduleservice.exception.LearningModuleNotFoundException;
 import com.ryzendee.moduleservice.mapper.card.CardCreateRequestMapper;
 import com.ryzendee.moduleservice.mapper.card.CardEntityMapper;
-import com.ryzendee.moduleservice.mapper.card.CardUpdateRequestMapper;
 import com.ryzendee.moduleservice.service.card.CardService;
 import com.ryzendee.moduleservice.testutils.builder.card.CardCreateRequestBuilder;
 import com.ryzendee.moduleservice.testutils.builder.card.CardEntityBuilder;
@@ -45,8 +44,6 @@ public class CardServiceDbIT {
 
     @MockitoBean
     private CardCreateRequestMapper cardCreateRequestMapper;
-    @MockitoBean
-    private CardUpdateRequestMapper cardUpdateRequestMapper;
     @MockitoBean
     private CardEntityMapper cardEntityMapper;
 
@@ -92,14 +89,12 @@ public class CardServiceDbIT {
     void updateCardById_withCardInDb_shouldUpdateCard() {
         // Given
         var updateRequest = CardUpdateRequestBuilder.builder().build();
-        when(cardUpdateRequestMapper.map(updateRequest, preparedCardEntity)).thenReturn(preparedCardEntity);
 
         // Act
         cardService.updateCardById(preparedCardEntity.getId(), updateRequest);
 
         // Assert
         var updatedEntity = testDatabaseFacade.find(preparedCardEntity.getId(), CardEntity.class);
-        verify(cardUpdateRequestMapper).map(updateRequest, preparedCardEntity);
         assertThat(updatedEntity).isEqualTo(preparedCardEntity);
         assertThat(updatedEntity.getUpdatedAt()).isNotNull();
     }

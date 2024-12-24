@@ -9,7 +9,6 @@ import com.ryzendee.moduleservice.exception.CardNotFoundException;
 import com.ryzendee.moduleservice.exception.LearningModuleNotFoundException;
 import com.ryzendee.moduleservice.mapper.card.CardCreateRequestMapper;
 import com.ryzendee.moduleservice.mapper.card.CardEntityMapper;
-import com.ryzendee.moduleservice.mapper.card.CardUpdateRequestMapper;
 import com.ryzendee.moduleservice.repository.CardJpaRepository;
 import com.ryzendee.moduleservice.repository.LearningModuleJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,6 @@ public class CardServiceImpl implements CardService {
     private final LearningModuleJpaRepository learningModuleJpaRepository;
 
     private final CardCreateRequestMapper cardCreateRequestMapper;
-    private final CardUpdateRequestMapper cardUpdateRequestMapper;
     private final CardEntityMapper cardEntityMapper;
 
     @Transactional
@@ -48,7 +46,8 @@ public class CardServiceImpl implements CardService {
     @Override
     public CardResponse updateCardById(UUID id, CardUpdateRequest request) {
         CardEntity entityToUpdate = getCardEntityById(id);
-        entityToUpdate = cardUpdateRequestMapper.map(request, entityToUpdate);
+        entityToUpdate.setTerm(request.term());
+        entityToUpdate.setDefinition(request.definition());
         cardJpaRepository.save(entityToUpdate);
 
         return cardEntityMapper.map(entityToUpdate);

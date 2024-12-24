@@ -5,7 +5,6 @@ import com.ryzendee.moduleservice.entity.LearningModuleEntity;
 import com.ryzendee.moduleservice.exception.LearningModuleNotFoundException;
 import com.ryzendee.moduleservice.mapper.learningmodule.LearningModuleCreateRequestMapper;
 import com.ryzendee.moduleservice.mapper.learningmodule.LearningModuleEntityMapper;
-import com.ryzendee.moduleservice.mapper.learningmodule.LearningModuleUpdateRequestMapper;
 import com.ryzendee.moduleservice.service.learningmodule.LearningModuleService;
 import com.ryzendee.moduleservice.testutils.builder.learningmodule.LearningModuleCreateRequestBuilder;
 import com.ryzendee.moduleservice.testutils.builder.learningmodule.LearningModuleEntityBuilder;
@@ -43,8 +42,6 @@ public class LearningModuleServiceDbIT {
     @MockitoBean
     private LearningModuleEntityMapper entityMapper;
     @MockitoBean
-    private LearningModuleUpdateRequestMapper updateRequestMapper;
-    @MockitoBean
     private LearningModuleCreateRequestMapper createRequestMapper;
 
     private LearningModuleEntity preparedEntity;
@@ -78,14 +75,12 @@ public class LearningModuleServiceDbIT {
     void updateEntity_withEntityInDb_shouldUpdateEntity() {
         // Given
         var updateRequest = LearningModuleUpdateRequestBuilder.builder().build();
-        when(updateRequestMapper.map(updateRequest, preparedEntity)).thenReturn(preparedEntity);
 
         // Act
         learningModuleService.updateLearningModuleById(preparedEntity.getId(), updateRequest);
 
         // Assert
         var updatedEntity = testDatabaseFacade.find(preparedEntity.getId(), LearningModuleEntity.class);
-        verify(updateRequestMapper).map(updateRequest, preparedEntity);
         assertThat(updatedEntity).isEqualTo(preparedEntity);
         assertThat(updatedEntity.getUpdatedAt()).isNotNull();
     }
