@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 
 public record LearningModuleUpdateRequest(
 
-        @Size(min = 1, max = 255, message = "Name must be between {min} and {max} characters")
+        @Size(max = 255, message = "Name must be not greater than {max} characters")
         @NotBlank(message = "Name must not be blank")
         String name,
         @Size(max = 1000, message = "Description must be not greater than {max} characters")
