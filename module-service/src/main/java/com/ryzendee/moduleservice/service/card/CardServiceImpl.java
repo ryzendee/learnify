@@ -45,7 +45,7 @@ public class CardServiceImpl implements CardService {
     @Transactional
     @Override
     public CardResponse updateCardById(UUID id, CardUpdateRequest request) {
-        CardEntity entityToUpdate = getCardEntityById(id);
+        CardEntity entityToUpdate = getCardWithLearningModuleById(id);
         entityToUpdate.setTerm(request.term());
         entityToUpdate.setDefinition(request.definition());
         cardJpaRepository.save(entityToUpdate);
@@ -63,7 +63,7 @@ public class CardServiceImpl implements CardService {
     @Transactional(readOnly = true)
     @Override
     public CardResponse getCardById(UUID id) {
-        CardEntity entityToReturn = getCardEntityById(id);
+        CardEntity entityToReturn = getCardWithLearningModuleById(id);
         return cardEntityMapper.map(entityToReturn);
     }
 
@@ -80,6 +80,11 @@ public class CardServiceImpl implements CardService {
 
     private CardEntity getCardEntityById(UUID id) {
         return cardJpaRepository.findById(id)
+                .orElseThrow(() -> new CardNotFoundException("Card with given id does not exists. Id : " + id));
+    }
+
+    private CardEntity getCardWithLearningModuleById(UUID id) {
+        return cardJpaRepository.findByIdWithLearningModule(id)
                 .orElseThrow(() -> new CardNotFoundException("Card with given id does not exists. Id : " + id));
     }
 }
