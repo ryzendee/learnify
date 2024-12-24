@@ -18,11 +18,15 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -64,7 +68,7 @@ public class LearningModuleRestControllerTest {
 
     @DisplayName("Should return status CREATED when valid request is sent to create a learning module")
     @Test
-    void createLearningModule_validRequest_shouldReturnStatusCreated() {
+    void createLearningModule_validRequest_shouldReturnLearningModuleResponseWithStatusCreated() {
         var learningModuleCreateRequest = LearningModuleCreateRequestBuilder.builder().build();
         var expectedLearningModuleResponse = LearningModuleResponseBuilder.builder().build();
 
@@ -119,7 +123,7 @@ public class LearningModuleRestControllerTest {
 
     @DisplayName("Should return status OK when valid request is sent to update a learning module by ID")
     @Test
-    void updateLearningModuleById_validRequest_shouldReturnStatusOk() {
+    void updateLearningModuleById_validRequest_shouldReturnLearnignModuleResponseWithStatusOk() {
         var learningModuleUpdateRequest = LearningModuleUpdateRequestBuilder.builder().build();
         var expectedLearningModuleResponse = LearningModuleResponseBuilder.builder().build();
 
@@ -172,9 +176,9 @@ public class LearningModuleRestControllerTest {
         verify(learningModuleService, never()).updateLearningModuleById(id, learningModuleUpdateRequest);
     }
 
-    @DisplayName("Should return status NOT FOUND when trying to update a non-existent learning module by ID")
+    @DisplayName("Should return status NOT FOUND when LearningModuleNotFoundException is thrown during update")
     @Test
-    void updateLearningModuleById_moduleDoesNotExists_shouldReturnStatusNotFound() {
+    void updateLearningModuleById_serviceThrowsLearningModuleNotFoundEx_shouldReturnStatusNotFound() {
         var learningModuleUpdateRequest = LearningModuleUpdateRequestBuilder.builder().build();
 
         doThrow(LearningModuleNotFoundException.class)
@@ -187,6 +191,85 @@ public class LearningModuleRestControllerTest {
                 .status(HttpStatus.NOT_FOUND);
 
         verify(learningModuleService).updateLearningModuleById(id, learningModuleUpdateRequest);
+    }
+
+    @DisplayName("Should return status OK when learning module exists by ID")
+    @Test
+    void getLearningModuleById_existsModule_shouldReturnLearningModuleResponseStatusOk() {
+        var expectedLearningModuleResponse = LearningModuleResponseBuilder.builder().build();
+
+        when(learningModuleService.getLearningModuleById(id))
+                .thenReturn(expectedLearningModuleResponse);
+
+        var actualLearningModuleResponse = restAssuredRequest.when()
+                .get("/{id}", id.toString())
+                .then()
+                .status(HttpStatus.OK)
+                .extract()
+                .as(LearningModuleResponse.class);
+        assertThat(actualLearningModuleResponse).isEqualTo(expectedLearningModuleResponse);
+
+        verify(learningModuleService).getLearningModuleById(id);
+    }
+
+    @DisplayName("Should return status NOT FOUND when LearningModuleNotFoundException is thrown during get")
+    @Test
+    void getLearningModuleById_serviceThrowsLearningModuleNotFoundEx_shouldReturnStatusNotFound() {
+        doThrow(LearningModuleNotFoundException.class)
+                .when(learningModuleService).getLearningModuleById(id);
+
+        restAssuredRequest.when()
+                .get("/{id}", id.toString())
+                .then()
+                .status(HttpStatus.NOT_FOUND);
+
+        verify(learningModuleService).getLearningModuleById(id);
+    }
+
+    @DisplayName("Should return status NO CONTENT when learning module is deleted successfully")
+    @Test
+    void deleteLearningModuleById_existsModule_shouldReturnStatusNoContent() {
+        restAssuredRequest.when()
+                .delete("/{id}", id.toString())
+                .then()
+                .status(HttpStatus.NO_CONTENT);
+
+        verify(learningModuleService).deleteLearningModuleById(id);
+    }
+
+    @DisplayName("Should return status NOT FOUND when LearningModuleNotFoundException is thrown during delete")
+    @Test
+    void deleteLearningModuleById_serviceThrowsLearningModuleNotFoundEx_shouldReturnStatusNotFound() {
+        doThrow(LearningModuleNotFoundException.class)
+                .when(learningModuleService).deleteLearningModuleById(id);
+
+        restAssuredRequest.when()
+                .delete("/{id}", id.toString())
+                .then()
+                .status(HttpStatus.NOT_FOUND);
+
+        verify(learningModuleService).deleteLearningModuleById(id);
+    }
+
+    @DisplayName("Should return status OK when valid request is sent to get a page of learning modules")
+    @Test
+    void getLearningModulePage_validRequestParams_shouldReturnPageWithStatusOk() {
+        var expectedLearningModuleResponsePage =
+                new PageImpl<>(List.of(LearningModuleResponseBuilder.builder().build()));
+        var pageable = PageRequest.of(0, 10);
+
+        when(learningModuleService.getLearningPage(pageable))
+                .thenReturn(expectedLearningModuleResponsePage);
+
+        restAssuredRequest
+                .queryParam("page", 0)
+                .queryParam("size", 10)
+                .when()
+                .get()
+                .then()
+                .status(HttpStatus.OK);
+
+        verify(learningModuleService).getLearningPage(pageable);
     }
 
     private static Stream<Arguments> getInvalidNameCases() {
