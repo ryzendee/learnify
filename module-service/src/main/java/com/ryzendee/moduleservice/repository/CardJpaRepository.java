@@ -17,7 +17,7 @@ public interface CardJpaRepository extends JpaRepository<CardEntity, UUID> {
     @Query("""
     SELECT c
     FROM CardEntity c
-        JOIN FETCH LearningModuleEntity
+        JOIN FETCH c.learningModuleEntity
     WHERE c.id = :id
     """)
     Optional<CardEntity> findByIdWithLearningModule(UUID id);
