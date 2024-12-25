@@ -17,12 +17,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.UUID;
 
@@ -41,9 +41,9 @@ public class LearningModuleServiceDbIT {
     @Autowired
     private TestDatabaseFacade testDatabaseFacade;
 
-    @MockitoBean
+    @MockBean
     private LearningModuleEntityMapper entityMapper;
-    @MockitoBean
+    @MockBean
     private LearningModuleCreateRequestMapper createRequestMapper;
 
     private LearningModuleEntity preparedEntity;

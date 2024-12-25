@@ -18,11 +18,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils;
 
@@ -43,7 +43,7 @@ public class LearningModuleRestControllerTest {
     private static final int MAX_NAME_LENGTH = 255;
     private static final int MAX_DESCRIPTION_LENGTH = 1000;
 
-    @MockitoBean
+    @MockBean
     private LearningModuleService learningModuleService;
 
     @Autowired
