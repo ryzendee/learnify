@@ -34,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 
 @WebMvcTest(LearningModuleRestController.class)
 public class LearningModuleRestControllerTest {
@@ -59,9 +60,9 @@ public class LearningModuleRestControllerTest {
         RestAssuredMockMvc.enableLoggingOfRequestAndResponseIfValidationFails();
 
         restAssuredRequest = RestAssuredMockMvc.given()
-                .contentType(ContentType.JSON);
-        //              .auth()
-        //              .with(jwt()
+                .contentType(ContentType.JSON)
+                      .auth()
+                      .with(jwt());
 
         id = UUID.randomUUID();
     }
