@@ -33,6 +33,7 @@
         <jacoco-plugin.version>0.8.10</jacoco-plugin.version>
         <maven-surefire-plugin.version>3.5.1</maven-surefire-plugin.version>
         <springdoc-openapi.version>2.6.0</springdoc-openapi.version>
+        <testcontainers-keycloak.version>3.4.0</testcontainers-keycloak.version>
     </properties>
     <dependencies>
         <dependency>
@@ -119,6 +120,12 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.dasniko</groupId>
+            <artifactId>testcontainers-keycloak</artifactId>
+            <version>${testcontainers-keycloak.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
