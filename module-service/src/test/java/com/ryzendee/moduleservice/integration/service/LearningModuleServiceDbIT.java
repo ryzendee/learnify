@@ -1,6 +1,5 @@
 package com.ryzendee.moduleservice.integration.service;
 
-import com.ryzendee.moduleservice.TestcontainersConfiguration;
 import com.ryzendee.moduleservice.entity.LearningModuleEntity;
 import com.ryzendee.moduleservice.exception.LearningModuleNotFoundException;
 import com.ryzendee.moduleservice.mapper.learningmodule.LearningModuleCreateRequestMapper;
@@ -10,19 +9,15 @@ import com.ryzendee.moduleservice.testutils.builder.learningmodule.LearningModul
 import com.ryzendee.moduleservice.testutils.builder.learningmodule.LearningModuleEntityBuilder;
 import com.ryzendee.moduleservice.testutils.builder.learningmodule.LearningModuleResponseBuilder;
 import com.ryzendee.moduleservice.testutils.builder.learningmodule.LearningModuleUpdateRequestBuilder;
-import com.ryzendee.moduleservice.testutils.config.TestConfig;
-import com.ryzendee.moduleservice.testutils.facade.TestDatabaseFacade;
+import com.ryzendee.moduleservice.testutils.base.BaseServiceDbIT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.PropertyReferenceException;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.UUID;
 
@@ -31,21 +26,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ActiveProfiles("test")
-@Import({TestConfig.class, TestcontainersConfiguration.class})
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class LearningModuleServiceDbIT {
+public class LearningModuleServiceDbIT extends BaseServiceDbIT {
 
     @Autowired
     private LearningModuleService learningModuleService;
-    @Autowired
-    private TestDatabaseFacade testDatabaseFacade;
-
     @MockBean
     private LearningModuleEntityMapper entityMapper;
     @MockBean
     private LearningModuleCreateRequestMapper createRequestMapper;
-
     private LearningModuleEntity preparedEntity;
 
     @BeforeEach
