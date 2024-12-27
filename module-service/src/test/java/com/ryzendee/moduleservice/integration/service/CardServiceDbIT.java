@@ -1,6 +1,5 @@
 package com.ryzendee.moduleservice.integration.service;
 
-import com.ryzendee.moduleservice.TestcontainersConfiguration;
 import com.ryzendee.moduleservice.entity.CardEntity;
 import com.ryzendee.moduleservice.entity.LearningModuleEntity;
 import com.ryzendee.moduleservice.exception.CardNotFoundException;
@@ -13,19 +12,15 @@ import com.ryzendee.moduleservice.testutils.builder.card.CardEntityBuilder;
 import com.ryzendee.moduleservice.testutils.builder.card.CardResponseBuilder;
 import com.ryzendee.moduleservice.testutils.builder.card.CardUpdateRequestBuilder;
 import com.ryzendee.moduleservice.testutils.builder.learningmodule.LearningModuleEntityBuilder;
-import com.ryzendee.moduleservice.testutils.config.TestConfig;
-import com.ryzendee.moduleservice.testutils.facade.TestDatabaseFacade;
+import com.ryzendee.moduleservice.testutils.base.BaseServiceDbIT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.PropertyReferenceException;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.UUID;
 
@@ -34,21 +29,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ActiveProfiles("test")
-@Import({TestConfig.class, TestcontainersConfiguration.class})
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class CardServiceDbIT {
+public class CardServiceDbIT extends BaseServiceDbIT {
 
     @Autowired
     private CardService cardService;
-    @Autowired
-    private TestDatabaseFacade testDatabaseFacade;
-
     @MockBean
     private CardCreateRequestMapper cardCreateRequestMapper;
     @MockBean
     private CardEntityMapper cardEntityMapper;
-
     private LearningModuleEntity preparedLearningModuleEntity;
     private CardEntity preparedCardEntity;
 
