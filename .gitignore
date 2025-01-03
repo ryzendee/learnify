@@ -6,6 +6,9 @@ target/
 */.mvn
 **/.idea
 */mvnw*
+node_modules
+*.md
+.env*
 
 ### STS ###
 .apt_generated
