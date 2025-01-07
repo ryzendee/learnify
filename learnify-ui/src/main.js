@@ -4,21 +4,16 @@ import router from './router';
 import { initKeycloak } from './services/keycloak';
 import { createVuetify } from 'vuetify';
 import 'vuetify/styles';
-import { VContainer, VRow, VCol, VCard, VCardTitle, VCardSubtitle, VBtn } from 'vuetify/components';
+
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
 
 initKeycloak()
     .then(() => {
         const vuetify = createVuetify({
-            components: {
-                VContainer,
-                VRow,
-                VCol,
-                VCard,
-                VCardTitle,
-                VCardSubtitle,
-                VBtn,
-            }
+            components,
+            directives
         });
 
         createApp(App)
