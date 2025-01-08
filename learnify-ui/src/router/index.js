@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import { isAuthenticated, updateToken } from '../services/keycloak';
 import ProfileView from '../views/ProfileView.vue';
 
+
 const routes = [
     {
         path: '/',
