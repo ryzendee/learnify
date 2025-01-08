@@ -1,0 +1,33 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: image-service
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI}
+
+springdoc:
+  api-docs:
+    enabled: false
+
+s3:
+  connection:
+    minio:
+      endpoint: ${MINIO_ENDPOINT}
+      username: ${MINIO_USERNAME}
+      password: ${MINIO_PASSWORD}
+  bucket:
+    image:
+      name: image-bucket
+
+keycloak:
+  url:
+    token: ${KEYCLOAK_URL_TOKEN}
+    authorization: ${KEYCLOAK_URL_AUTHORIZATION}
