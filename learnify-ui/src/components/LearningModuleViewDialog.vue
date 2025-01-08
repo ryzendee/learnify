@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      localDialog: this.dialog, // Копируем проп в локальное состояние
+      localDialog: this.dialog,
     };
   },
   watch: {
@@ -34,14 +34,13 @@ export default {
     dialog(newValue) {
       this.localDialog = newValue;
     },
-    // Если localDialog изменяется, то эмитируем событие update:dialog
     localDialog(newValue) {
       this.$emit('update:dialog', newValue);
     }
   },
   methods: {
     closeDialog() {
-      this.localDialog = false; // Закрытие диалога при нажатии кнопки
+      this.localDialog = false;
     }
   }
 };
@@ -49,8 +48,8 @@ export default {
 
 <style scoped>
 .v-dialog .v-card {
-  background-color: #1a1a1a; /* Темный фон для попапа */
-  color: #e1e1e1; /* Белый текст */
+  background-color: #1a1a1a;
+  color: #e1e1e1;
   border-radius: 12px;
 }
 

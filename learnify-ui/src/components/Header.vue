@@ -52,7 +52,6 @@ export default {
 </script>
 
 <style scoped>
-/* Стили для хедера */
 .menu-btn {
   background-color: #242424;
   color: #e1e1e1;
