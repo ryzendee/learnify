@@ -1,3 +1,8 @@
 spring:
   jpa:
     show-sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://mocked-issuer-uri.com
