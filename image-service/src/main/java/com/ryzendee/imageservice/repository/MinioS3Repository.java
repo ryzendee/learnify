@@ -56,13 +56,16 @@ public class MinioS3Repository implements S3Repository {
     }
 
     private boolean isObjectExists(String bucketName, String objectName) throws Exception {
-        StatObjectResponse statObjectResponse = minioClient.statObject(
-                StatObjectArgs.builder()
-                        .bucket(bucketName)
-                        .object(objectName)
-                        .build()
-        );
-
-        return statObjectResponse != null;
+        try {
+            StatObjectResponse statObjectResponse = minioClient.statObject(
+                    StatObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(objectName)
+                            .build()
+            );
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 }
