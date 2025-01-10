@@ -1,0 +1,12 @@
+package com.ryzendee.imageservice;
+
+import org.springframework.boot.SpringApplication;
+
+public class TestImageServiceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.from(ImageServiceApplication::main)
+				.run(args);
+	}
+
+}
