@@ -1,0 +1,29 @@
+name: Image Service Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'module-service/**'
+      - '.github/workflows/image-service.yml'
+      - '.github/workflows/reusable-*.yml'
+  pull_request:
+    branches:
+      - main
+      - dev
+    paths:
+      - 'module-service/**'
+      - '.github/workflows/image-service.yml'
+      - '.github/workflows/reusable-*.yml'
+
+jobs:
+  test:
+    uses: ./.github/workflows/reusable-test.yml
+    with:
+      project_dir: image-service
+      java_version: '17'
+      java_distribution: 'corretto'
+      cache_build_tool: 'maven'
+
+
