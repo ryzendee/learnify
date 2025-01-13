@@ -42,8 +42,8 @@ public class CardRestControllerTest {
 
     private static final String BASE_URI = "/api/v1/learning-modules/{learningModuleId}/cards";
 
-    private static final int MAX_NAME_LENGTH = 255;
-    private static final int MAX_DEFINITION_LENGTH = 1000;
+    private static final int MAX_QUESTION_LENGTH = 255;
+    private static final int MAX_ANSWER_LENGTH = 1000;
     private static final int MAX_IMAGE_OBJECT_NAME_LENGTH = 255;
 
     @MockBean
@@ -154,7 +154,7 @@ public class CardRestControllerTest {
     @ParameterizedTest
     void updateCardById_invalidQuestionField_shouldReturnStatusBadRequest(String invalidQuestion) {
         var cardUpdateRequest = CardUpdateRequestBuilder.builder()
-                .withAnswer(invalidQuestion)
+                .withQuestion(invalidQuestion)
                 .build();
 
         restAssuredRequest.body(cardUpdateRequest)
@@ -171,7 +171,7 @@ public class CardRestControllerTest {
     @ParameterizedTest
     void updateCardById_invalidAnswerField_shouldReturnStatusBadRequest(String invalidAnswer) {
         var cardUpdateRequest = CardUpdateRequestBuilder.builder()
-                .withQuestion(invalidAnswer)
+                .withAnswer(invalidAnswer)
                 .build();
 
         restAssuredRequest.body(cardUpdateRequest)
@@ -300,7 +300,7 @@ public class CardRestControllerTest {
         return Stream.of(
                 arguments(named("Question is null", null)),
                 arguments(named("Question is blank", "  ")),
-                arguments(named("Question is too long", generateStringWithLength(MAX_NAME_LENGTH + 1)))
+                arguments(named("Question is too long", generateStringWithLength(MAX_QUESTION_LENGTH + 1)))
         );
     }
 
@@ -308,7 +308,7 @@ public class CardRestControllerTest {
         return Stream.of(
                 arguments(named("Answer is null", null)),
                 arguments(named("Answer is blank", "  ")),
-                arguments(named("Answer is too long", generateStringWithLength(MAX_DEFINITION_LENGTH + 1)))
+                arguments(named("Answer is too long", generateStringWithLength(MAX_ANSWER_LENGTH + 1)))
         );
     }
 
