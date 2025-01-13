@@ -5,11 +5,11 @@ import jakarta.validation.constraints.Size;
 
 public record CardCreateRequest(
 
-        @Size(max = 255, message = "Term must be not greater than {max} characters")
-        @NotBlank(message = "Term must not be blank")
-        String term,
-        @Size(max = 1000, message = "Definition must be not greater than {max} characters")
-        @NotBlank(message = "Definition must not be blank")
-        String definition
+        @Size(max = 255, message = "Question must be not greater than {max} characters")
+        @NotBlank(message = "Question must not be blank")
+        String question,
+        @Size(max = 1000, message = "Answer must be not greater than {max} characters")
+        @NotBlank(message = "Answer must not be blank")
+        String answer
 ) {
 }

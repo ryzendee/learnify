@@ -30,8 +30,8 @@ public class CardEntityMapperTest {
 
         var mappedCardResponse = cardEntityMapper.map(cardEntity);
         assertThat(mappedCardResponse.id()).isEqualTo(cardEntity.getId());
-        assertThat(mappedCardResponse.term()).isEqualTo(cardEntity.getTerm());
-        assertThat(mappedCardResponse.definition()).isEqualTo(cardEntity.getDefinition());
+        assertThat(mappedCardResponse.question()).isEqualTo(cardEntity.getQuestion());
+        assertThat(mappedCardResponse.answer()).isEqualTo(cardEntity.getAnswer());
         assertThat(mappedCardResponse.learningModuleId()).isEqualTo(learningModule.getId());
     }
 }

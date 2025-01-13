@@ -29,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+
 public class CardServiceDbIT extends BaseServiceDbIT {
 
     @Autowired
@@ -85,8 +86,8 @@ public class CardServiceDbIT extends BaseServiceDbIT {
 
         // Assert
         var updatedEntity = testDatabaseFacade.find(preparedCardEntity.getId(), CardEntity.class);
-        assertThat(updatedEntity.getTerm()).isEqualTo(updateRequest.term());
-        assertThat(updatedEntity.getDefinition()).isEqualTo(updateRequest.definition());
+        assertThat(updatedEntity.getQuestion()).isEqualTo(updateRequest.question());
+        assertThat(updatedEntity.getAnswer()).isEqualTo(updateRequest.answer());
         assertThat(updatedEntity.getUpdatedAt()).isNotNull();
     }
 

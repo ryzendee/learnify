@@ -21,8 +21,8 @@ public class CardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private String term;
-    private String definition;
+    private String question;
+    private String answer;
 
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)

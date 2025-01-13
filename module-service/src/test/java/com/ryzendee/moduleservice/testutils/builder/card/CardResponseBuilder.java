@@ -15,11 +15,11 @@ public class CardResponseBuilder implements TestBaseBuilder<CardResponse> {
 
     private UUID id = UUID.randomUUID();
     private UUID learningModuleId = UUID.randomUUID();
-    private String term = "cardResponseTerm";
-    private String definition = "cardResponseDefinition";
+    private String question = "cardResponseQuestion";
+    private String answer = "cardResponseAnswer";
 
     @Override
     public CardResponse build() {
-        return new CardResponse(id, learningModuleId, term, definition);
+        return new CardResponse(id, learningModuleId, question, answer);
     }
 }

@@ -5,7 +5,7 @@ import java.util.UUID;
 public record CardResponse(
         UUID id,
         UUID learningModuleId,
-        String term,
-        String definition
+        String question,
+        String answer
 ) {
 }

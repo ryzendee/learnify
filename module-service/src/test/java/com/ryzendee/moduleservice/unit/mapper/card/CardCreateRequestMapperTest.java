@@ -1,7 +1,6 @@
 package com.ryzendee.moduleservice.unit.mapper.card;
 
 import com.ryzendee.moduleservice.mapper.card.CardCreateRequestMapper;
-import com.ryzendee.moduleservice.mapper.card.CardCreateRequestMapperImpl;
 import com.ryzendee.moduleservice.testutils.builder.card.CardCreateRequestBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,7 @@ public class CardCreateRequestMapperTest {
         var cardCreateRequest = CardCreateRequestBuilder.builder().build();
         var mappedEntity = cardCreateRequestMapper.map(cardCreateRequest);
 
-        assertThat(mappedEntity.getTerm()).isEqualTo(cardCreateRequest.term());
-        assertThat(mappedEntity.getDefinition()).isEqualTo(cardCreateRequest.definition());
+        assertThat(mappedEntity.getQuestion()).isEqualTo(cardCreateRequest.question());
+        assertThat(mappedEntity.getAnswer()).isEqualTo(cardCreateRequest.answer());
     }
 }
