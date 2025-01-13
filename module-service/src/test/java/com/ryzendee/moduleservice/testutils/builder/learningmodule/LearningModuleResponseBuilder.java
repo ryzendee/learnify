@@ -15,14 +15,16 @@ public class LearningModuleResponseBuilder implements TestBaseBuilder<LearningMo
 
     private UUID id = UUID.randomUUID();
     private String name = "learningModuleResponseName";
-    private String description = "learningModuleDescription";
+    private String description = "learningModuleResponseDescription";
+    private String imageObjectName = "learningModuleResponseImageObjectName";
 
     @Override
     public LearningModuleResponse build() {
         return new LearningModuleResponse(
                 id,
                 name,
-                description
+                description,
+                imageObjectName
         );
     }
 }

@@ -44,6 +44,7 @@ public class CardRestControllerTest {
 
     private static final int MAX_NAME_LENGTH = 255;
     private static final int MAX_DEFINITION_LENGTH = 1000;
+    private static final int MAX_IMAGE_OBJECT_NAME_LENGTH = 255;
 
     @MockBean
     private CardService cardService;
@@ -182,6 +183,23 @@ public class CardRestControllerTest {
         verify(cardService, never()).updateCardById(cardId, cardUpdateRequest);
     }
 
+    @DisplayName("Should return status BAD REQUEST when imageObjectName field is invalid in update request")
+    @MethodSource("getInvalidImageObjectNameCases")
+    @ParameterizedTest
+    void updateCardById_invalidImageObjectNameField_shouldReturnStatusBadRequest(String invalidImageObjectName) {
+        var cardUpdateRequest = CardUpdateRequestBuilder.builder()
+                .withImageObjectName(invalidImageObjectName)
+                .build();
+
+        restAssuredRequest.body(cardUpdateRequest)
+                .when()
+                .put("/{id}", cardId.toString())
+                .then()
+                .status(HttpStatus.BAD_REQUEST);
+
+        verify(cardService, never()).updateCardById(cardId, cardUpdateRequest);
+    }
+
     @DisplayName("Should return status NOT FOUND when CardNotFoundException is thrown during update")
     @Test
     void updateCardById_serviceThrowsCardNotFoundEx_shouldReturnStatusNotFound() {
@@ -291,6 +309,12 @@ public class CardRestControllerTest {
                 arguments(named("Answer is null", null)),
                 arguments(named("Answer is blank", "  ")),
                 arguments(named("Answer is too long", generateStringWithLength(MAX_DEFINITION_LENGTH + 1)))
+        );
+    }
+
+    private static Stream<Arguments> getInvalidImageObjectNameCases() {
+        return Stream.of(
+                arguments(named("ImageObjectName is too long", generateStringWithLength(MAX_IMAGE_OBJECT_NAME_LENGTH + 1)))
         );
     }
 

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.With;
 
+import java.util.UUID;
+
 @With
 @NoArgsConstructor(staticName = "builder")
 @AllArgsConstructor
@@ -14,9 +16,10 @@ public class CardCreateRequestBuilder implements TestBaseBuilder<CardCreateReque
 
     private String question = "cardCreateRequestQuestion";
     private String answer = "cardCreateRequestAnswer";
+    private String imageObjectName = "cardCreateRequestImageObjectName";
 
     @Override
     public CardCreateRequest build() {
-        return new CardCreateRequest(question, answer);
+        return new CardCreateRequest(question, answer, imageObjectName);
     }
 }

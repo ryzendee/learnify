@@ -14,9 +14,10 @@ public class LearningModuleUpdateRequestBuilder implements TestBaseBuilder<Learn
 
     private String name = "updateRequestName";
     private String description = "updateRequestDescription";
+    private String imageObjectName = "updateRequestImageObjectName";
 
     @Override
     public LearningModuleUpdateRequest build() {
-        return new LearningModuleUpdateRequest(name, description);
+        return new LearningModuleUpdateRequest(name, description, imageObjectName);
     }
 }

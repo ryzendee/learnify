@@ -13,9 +13,10 @@ public class LearningModuleCreateRequestBuilder implements TestBaseBuilder<Learn
 
     private String name = "createRequestName";
     private String description = "createRequestDescription";
+    private String imageObjectName = "createRequestImageObjectName";
 
     @Override
     public LearningModuleCreateRequest build() {
-        return new LearningModuleCreateRequest(name, description);
+        return new LearningModuleCreateRequest(name, description, imageObjectName);
     }
 }

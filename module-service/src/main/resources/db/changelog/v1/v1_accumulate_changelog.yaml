@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/v1/v1-2_create_table_cards.xml
   - include:
       file: db/changelog/v1/v1-3_rename_columns_term_definition_table_cards.xml
+  - include:
+      file: db/changelog/v1/v1-4_add_columns_image_object_name.xml

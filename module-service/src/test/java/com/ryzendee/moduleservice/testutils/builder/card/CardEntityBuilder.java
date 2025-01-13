@@ -17,6 +17,7 @@ public class CardEntityBuilder implements TestBaseBuilder<CardEntity> {
     private UUID id = null;
     private String question = "cardEntityQuestion";
     private String answer = "cardEntityAnswer";
+    private String imageObjectName = "cardEntityImageObjectName";
 
     private LearningModuleEntity learningModuleEntity = null;
 
@@ -26,6 +27,7 @@ public class CardEntityBuilder implements TestBaseBuilder<CardEntity> {
                 .id(id)
                 .question(question)
                 .answer(answer)
+                .imageObjectName(imageObjectName)
                 .learningModuleEntity(learningModuleEntity)
                 .build();
     }

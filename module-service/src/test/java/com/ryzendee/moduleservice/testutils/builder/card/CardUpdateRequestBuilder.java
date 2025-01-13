@@ -13,9 +13,10 @@ public class CardUpdateRequestBuilder implements TestBaseBuilder<CardUpdateReque
 
     private String answer = "cardUpdateRequestAnswer";
     private String question = "cardUpdateRequestQuestion";
+    private String imageObjectName = "cardUpdateRequestImageObjectName";
 
     @Override
     public CardUpdateRequest build() {
-        return new CardUpdateRequest(answer, question);
+        return new CardUpdateRequest(answer, question, imageObjectName);
     }
 }

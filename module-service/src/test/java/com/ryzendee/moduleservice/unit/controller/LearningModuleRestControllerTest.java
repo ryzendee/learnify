@@ -44,6 +44,7 @@ public class LearningModuleRestControllerTest {
 
     private static final int MAX_NAME_LENGTH = 255;
     private static final int MAX_DESCRIPTION_LENGTH = 1000;
+    private static final int MAX_IMAGE_OBJECT_NAME_LENGTH = 255;
 
     @MockBean
     private LearningModuleService learningModuleService;
@@ -178,6 +179,23 @@ public class LearningModuleRestControllerTest {
         verify(learningModuleService, never()).updateLearningModuleById(id, learningModuleUpdateRequest);
     }
 
+    @DisplayName("Should return status BAD REQUEST when description field is invalid in update request")
+    @MethodSource("getInvalidImageObjectNameCases")
+    @ParameterizedTest
+    void updateLearningModuleById_invalidImageObjectNameField_shouldReturnStatusBadRequest(String invalidImageObjectName) {
+        var learningModuleUpdateRequest = LearningModuleUpdateRequestBuilder.builder()
+                .withImageObjectName(invalidImageObjectName)
+                .build();
+
+        restAssuredRequest.body(learningModuleUpdateRequest)
+                .when()
+                .put("/{id}", id.toString())
+                .then()
+                .status(HttpStatus.BAD_REQUEST);
+
+        verify(learningModuleService, never()).updateLearningModuleById(id, learningModuleUpdateRequest);
+    }
+
     @DisplayName("Should return status NOT FOUND when LearningModuleNotFoundException is thrown during update")
     @Test
     void updateLearningModuleById_serviceThrowsLearningModuleNotFoundEx_shouldReturnStatusNotFound() {
@@ -288,6 +306,11 @@ public class LearningModuleRestControllerTest {
         );
     }
 
+    private static Stream<Arguments> getInvalidImageObjectNameCases() {
+        return Stream.of(
+                arguments(named("ImageObjectName is too long", generateStringWithLength(MAX_IMAGE_OBJECT_NAME_LENGTH + 1)))
+        );
+    }
     private static String generateStringWithLength(int length) {
         return RandomStringUtils.random(length);
     }

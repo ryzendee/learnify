@@ -19,6 +19,7 @@ public class LearningModuleEntityBuilder implements TestBaseBuilder<LearningModu
     private UUID id = null;
     private String name = "entityName";
     private String description = "entityDescription";
+    private String imageObjectName = "entityImageObjectName";
     private List<CardEntity> cardEntityList = new ArrayList<>();
 
     @Override
@@ -27,6 +28,7 @@ public class LearningModuleEntityBuilder implements TestBaseBuilder<LearningModu
                 .id(id)
                 .name(name)
                 .description(description)
+                .imageObjectName(imageObjectName)
                 .cardEntityList(cardEntityList)
                 .build();
     }

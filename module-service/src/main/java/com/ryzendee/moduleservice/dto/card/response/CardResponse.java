@@ -6,6 +6,7 @@ public record CardResponse(
         UUID id,
         UUID learningModuleId,
         String question,
-        String answer
+        String answer,
+        String imageObjectName
 ) {
 }
