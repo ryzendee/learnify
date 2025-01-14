@@ -32,7 +32,7 @@ jobs:
           cache-dependency-path: ${{ inputs.project_dir }}/pom.xml
 
       - name: Run Tests
-        run: mvn -f ${{ inputs.project_dir}}/pom.xml -ntp clean verify
+        run: mvn -f ${{ inputs.project_dir}}/pom.xml -ntp clean verify site
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v4
