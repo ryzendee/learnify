@@ -11,12 +11,12 @@ import lombok.With;
 @AllArgsConstructor
 public class CardUpdateRequestBuilder implements TestBaseBuilder<CardUpdateRequest> {
 
-    private String answer = "cardUpdateRequestAnswer";
     private String question = "cardUpdateRequestQuestion";
+    private String answer = "cardUpdateRequestAnswer";
     private String imageObjectName = "cardUpdateRequestImageObjectName";
 
     @Override
     public CardUpdateRequest build() {
-        return new CardUpdateRequest(answer, question, imageObjectName);
+        return new CardUpdateRequest(question, answer, imageObjectName);
     }
 }
