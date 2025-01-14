@@ -4,7 +4,9 @@ import com.ryzendee.moduleservice.entity.LearningModuleEntity;
 import com.ryzendee.moduleservice.exception.LearningModuleNotFoundException;
 import com.ryzendee.moduleservice.mapper.learningmodule.LearningModuleCreateRequestMapper;
 import com.ryzendee.moduleservice.mapper.learningmodule.LearningModuleEntityMapper;
+import com.ryzendee.moduleservice.repository.LearningModuleJpaRepository;
 import com.ryzendee.moduleservice.service.learningmodule.LearningModuleService;
+import com.ryzendee.moduleservice.service.learningmodule.LearningModuleServiceImpl;
 import com.ryzendee.moduleservice.testutils.builder.learningmodule.LearningModuleCreateRequestBuilder;
 import com.ryzendee.moduleservice.testutils.builder.learningmodule.LearningModuleEntityBuilder;
 import com.ryzendee.moduleservice.testutils.builder.learningmodule.LearningModuleResponseBuilder;
@@ -14,7 +16,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.PropertyReferenceException;
@@ -157,5 +161,16 @@ public class LearningModuleServiceDbIT extends BaseServiceDbIT {
 
     private void cleanDatabaseData() {
         testDatabaseFacade.cleanDatabase();
+    }
+
+    @TestConfiguration
+    static class TestConfig {
+
+        @Bean
+        public LearningModuleService learningModuleService(LearningModuleJpaRepository learningModuleJpaRepository,
+                                                           LearningModuleCreateRequestMapper moduleCreateRequestMapper,
+                                                           LearningModuleEntityMapper moduleEntityMapper) {
+            return new LearningModuleServiceImpl(learningModuleJpaRepository, moduleCreateRequestMapper, moduleEntityMapper);
+        }
     }
 }
