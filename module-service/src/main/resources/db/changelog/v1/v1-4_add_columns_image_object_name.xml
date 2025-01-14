@@ -3,7 +3,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet id="v1-3" author="Ryazantsev Dmitry">
+    <changeSet id="v1-4" author="Ryazantsev Dmitry">
         <preConditions onFail="HALT">
             <tableExists tableName="cards"/>
             <tableExists tableName="learning_modules"/>
