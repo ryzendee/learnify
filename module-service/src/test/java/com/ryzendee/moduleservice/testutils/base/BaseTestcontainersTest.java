@@ -13,7 +13,8 @@ public abstract class BaseTestcontainersTest {
 
     @ServiceConnection
     protected static PostgreSQLContainer<?> postgresContainer =
-            new PostgreSQLContainer<>(DockerImageName.parse("postgres:15.6"));
+            new PostgreSQLContainer<>(DockerImageName.parse("postgres:15.6"))
+                    .withReuse(true);
 
     protected  static KeycloakContainer keycloakContainer =
             new KeycloakContainer("quay.io/keycloak/keycloak:25.0.2")

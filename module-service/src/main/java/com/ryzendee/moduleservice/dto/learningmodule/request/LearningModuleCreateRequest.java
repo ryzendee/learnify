@@ -9,6 +9,8 @@ public record LearningModuleCreateRequest(
         @NotBlank(message = "Name must not be blank")
         String name,
         @Size(max = 1000, message = "Description must be not greater than {max} characters")
-        String description
+        String description,
+        @Size(max = 255, message = "Image object name must be not greater than {max} characters")
+        String imageObjectName
 ) {
 }

@@ -42,8 +42,9 @@ public class CardRestControllerTest {
 
     private static final String BASE_URI = "/api/v1/learning-modules/{learningModuleId}/cards";
 
-    private static final int MAX_NAME_LENGTH = 255;
-    private static final int MAX_DEFINITION_LENGTH = 1000;
+    private static final int MAX_QUESTION_LENGTH = 255;
+    private static final int MAX_ANSWER_LENGTH = 1000;
+    private static final int MAX_IMAGE_OBJECT_NAME_LENGTH = 255;
 
     @MockBean
     private CardService cardService;
@@ -93,12 +94,12 @@ public class CardRestControllerTest {
         verify(cardService).createCard(learningModuleId, cardCreateRequest);
     }
 
-    @DisplayName("Should return status BAD REQUEST when term field is invalid in create request")
-    @MethodSource("getInvalidTermCases")
+    @DisplayName("Should return status BAD REQUEST when question field is invalid in create request")
+    @MethodSource("getInvalidQuestionCases")
     @ParameterizedTest
-    void createCard_invalidTermField_shouldReturnStatusBadRequest(String invalidTerm) {
+    void createCard_invalidQuestionField_shouldReturnStatusBadRequest(String invalidQuestion) {
         var cardCreateRequest = CardCreateRequestBuilder.builder()
-                .withTerm(invalidTerm)
+                .withQuestion(invalidQuestion)
                 .build();
 
         restAssuredRequest.body(cardCreateRequest)
@@ -110,12 +111,12 @@ public class CardRestControllerTest {
         verify(cardService, never()).createCard(learningModuleId, cardCreateRequest);
     }
 
-    @DisplayName("Should return status BAD REQUEST when definition field is invalid in create request")
-    @MethodSource("getInvalidDefinitionCases")
+    @DisplayName("Should return status BAD REQUEST when answer field is invalid in create request")
+    @MethodSource("getInvalidAnswerCases")
     @ParameterizedTest
-    void createCard_invalidDefinitionField_shouldReturnStatusBadRequest(String invalidDefinition) {
+    void createCard_invalidAnswerField_shouldReturnStatusBadRequest(String invalidAnswer) {
         var cardCreateRequest = CardCreateRequestBuilder.builder()
-                .withDefinition(invalidDefinition)
+                .withAnswer(invalidAnswer)
                 .build();
 
         restAssuredRequest.body(cardCreateRequest)
@@ -148,12 +149,12 @@ public class CardRestControllerTest {
         verify(cardService).updateCardById(cardId, cardUpdateRequest);
     }
 
-    @DisplayName("Should return status BAD REQUEST when term field is invalid in update request")
-    @MethodSource("getInvalidTermCases")
+    @DisplayName("Should return status BAD REQUEST when question field is invalid in update request")
+    @MethodSource("getInvalidQuestionCases")
     @ParameterizedTest
-    void updateCardById_invalidTermField_shouldReturnStatusBadRequest(String invalidTerm) {
+    void updateCardById_invalidQuestionField_shouldReturnStatusBadRequest(String invalidQuestion) {
         var cardUpdateRequest = CardUpdateRequestBuilder.builder()
-                .withTerm(invalidTerm)
+                .withQuestion(invalidQuestion)
                 .build();
 
         restAssuredRequest.body(cardUpdateRequest)
@@ -165,12 +166,29 @@ public class CardRestControllerTest {
         verify(cardService, never()).updateCardById(cardId, cardUpdateRequest);
     }
 
-    @DisplayName("Should return status BAD REQUEST when definition field is invalid in update request")
-    @MethodSource("getInvalidDefinitionCases")
+    @DisplayName("Should return status BAD REQUEST when answer field is invalid in update request")
+    @MethodSource("getInvalidAnswerCases")
     @ParameterizedTest
-    void updateCardById_invalidDefinitionField_shouldReturnStatusBadRequest(String invalidDefinition) {
+    void updateCardById_invalidAnswerField_shouldReturnStatusBadRequest(String invalidAnswer) {
         var cardUpdateRequest = CardUpdateRequestBuilder.builder()
-                .withDefinition(invalidDefinition)
+                .withAnswer(invalidAnswer)
+                .build();
+
+        restAssuredRequest.body(cardUpdateRequest)
+                .when()
+                .put("/{id}", cardId.toString())
+                .then()
+                .status(HttpStatus.BAD_REQUEST);
+
+        verify(cardService, never()).updateCardById(cardId, cardUpdateRequest);
+    }
+
+    @DisplayName("Should return status BAD REQUEST when imageObjectName field is invalid in update request")
+    @MethodSource("getInvalidImageObjectNameCases")
+    @ParameterizedTest
+    void updateCardById_invalidImageObjectNameField_shouldReturnStatusBadRequest(String invalidImageObjectName) {
+        var cardUpdateRequest = CardUpdateRequestBuilder.builder()
+                .withImageObjectName(invalidImageObjectName)
                 .build();
 
         restAssuredRequest.body(cardUpdateRequest)
@@ -278,19 +296,25 @@ public class CardRestControllerTest {
         verify(cardService).getCardPageByLearningModuleId(learningModuleId, pageable);
     }
 
-    private static Stream<Arguments> getInvalidTermCases() {
+    private static Stream<Arguments> getInvalidQuestionCases() {
         return Stream.of(
-                arguments(named("Term is null", null)),
-                arguments(named("Term is blank", "  ")),
-                arguments(named("Term is too long", generateStringWithLength(MAX_NAME_LENGTH + 1)))
+                arguments(named("Question is null", null)),
+                arguments(named("Question is blank", "  ")),
+                arguments(named("Question is too long", generateStringWithLength(MAX_QUESTION_LENGTH + 1)))
         );
     }
 
-    private static Stream<Arguments> getInvalidDefinitionCases() {
+    private static Stream<Arguments> getInvalidAnswerCases() {
         return Stream.of(
-                arguments(named("Definition is null", null)),
-                arguments(named("Definition is blank", "  ")),
-                arguments(named("Definition is too long", generateStringWithLength(MAX_DEFINITION_LENGTH + 1)))
+                arguments(named("Answer is null", null)),
+                arguments(named("Answer is blank", "  ")),
+                arguments(named("Answer is too long", generateStringWithLength(MAX_ANSWER_LENGTH + 1)))
+        );
+    }
+
+    private static Stream<Arguments> getInvalidImageObjectNameCases() {
+        return Stream.of(
+                arguments(named("ImageObjectName is too long", generateStringWithLength(MAX_IMAGE_OBJECT_NAME_LENGTH + 1)))
         );
     }
 

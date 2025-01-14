@@ -25,6 +25,7 @@ public class LearningModuleEntity {
     private UUID id;
     private String name;
     private String description;
+    private String imageObjectName;
 
     @EqualsAndHashCode.Exclude
     @Builder.Default

@@ -6,7 +6,10 @@ import com.ryzendee.moduleservice.exception.CardNotFoundException;
 import com.ryzendee.moduleservice.exception.LearningModuleNotFoundException;
 import com.ryzendee.moduleservice.mapper.card.CardCreateRequestMapper;
 import com.ryzendee.moduleservice.mapper.card.CardEntityMapper;
+import com.ryzendee.moduleservice.repository.CardJpaRepository;
+import com.ryzendee.moduleservice.repository.LearningModuleJpaRepository;
 import com.ryzendee.moduleservice.service.card.CardService;
+import com.ryzendee.moduleservice.service.card.CardServiceImpl;
 import com.ryzendee.moduleservice.testutils.builder.card.CardCreateRequestBuilder;
 import com.ryzendee.moduleservice.testutils.builder.card.CardEntityBuilder;
 import com.ryzendee.moduleservice.testutils.builder.card.CardResponseBuilder;
@@ -17,7 +20,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.PropertyReferenceException;
@@ -28,6 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 
 public class CardServiceDbIT extends BaseServiceDbIT {
 
@@ -85,8 +94,8 @@ public class CardServiceDbIT extends BaseServiceDbIT {
 
         // Assert
         var updatedEntity = testDatabaseFacade.find(preparedCardEntity.getId(), CardEntity.class);
-        assertThat(updatedEntity.getTerm()).isEqualTo(updateRequest.term());
-        assertThat(updatedEntity.getDefinition()).isEqualTo(updateRequest.definition());
+        assertThat(updatedEntity.getQuestion()).isEqualTo(updateRequest.question());
+        assertThat(updatedEntity.getAnswer()).isEqualTo(updateRequest.answer());
         assertThat(updatedEntity.getUpdatedAt()).isNotNull();
     }
 
@@ -178,5 +187,17 @@ public class CardServiceDbIT extends BaseServiceDbIT {
 
     private void cleanDatabaseData() {
         testDatabaseFacade.cleanDatabase();
+    }
+
+    @TestConfiguration
+    static class TestConfig {
+
+        @Bean
+        public CardService cardService(CardJpaRepository cardJpaRepository,
+                                       LearningModuleJpaRepository learningModuleJpaRepository,
+                                       CardCreateRequestMapper cardCreateRequestMapper,
+                                       CardEntityMapper cardEntityMapper) {
+            return new CardServiceImpl(cardJpaRepository, learningModuleJpaRepository, cardCreateRequestMapper, cardEntityMapper);
+        }
     }
 }

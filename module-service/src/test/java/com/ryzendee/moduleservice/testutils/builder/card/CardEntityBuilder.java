@@ -15,8 +15,9 @@ import java.util.UUID;
 public class CardEntityBuilder implements TestBaseBuilder<CardEntity> {
 
     private UUID id = null;
-    private String term = "cardEntityTerm";
-    private String definition = "cardDefinition";
+    private String question = "cardEntityQuestion";
+    private String answer = "cardEntityAnswer";
+    private String imageObjectName = "cardEntityImageObjectName";
 
     private LearningModuleEntity learningModuleEntity = null;
 
@@ -24,8 +25,9 @@ public class CardEntityBuilder implements TestBaseBuilder<CardEntity> {
     public CardEntity build() {
         return CardEntity.builder()
                 .id(id)
-                .term(term)
-                .definition(definition)
+                .question(question)
+                .answer(answer)
+                .imageObjectName(imageObjectName)
                 .learningModuleEntity(learningModuleEntity)
                 .build();
     }

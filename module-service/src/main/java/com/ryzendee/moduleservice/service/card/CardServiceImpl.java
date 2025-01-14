@@ -46,8 +46,8 @@ public class CardServiceImpl implements CardService {
     @Override
     public CardResponse updateCardById(UUID id, CardUpdateRequest request) {
         CardEntity entityToUpdate = getCardWithLearningModuleById(id);
-        entityToUpdate.setTerm(request.term());
-        entityToUpdate.setDefinition(request.definition());
+        entityToUpdate.setQuestion(request.question());
+        entityToUpdate.setAnswer(request.answer());
         cardJpaRepository.save(entityToUpdate);
 
         return cardEntityMapper.map(entityToUpdate);
