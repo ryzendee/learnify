@@ -38,7 +38,7 @@ jobs:
         uses: mikepenz/action-junit-report@v4
         if: success() || failure()
         with:
-          report_paths: ${{ inputs.test_report_path}}/target/surefire-reports/TEST-*.xml
+          report_paths: ${{ inputs.project_dir}}/target/surefire-reports/TEST-*.xml
           detailed_summary: true
 
       - name: Add coverage to PR
