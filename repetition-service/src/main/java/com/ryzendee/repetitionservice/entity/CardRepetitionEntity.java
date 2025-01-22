@@ -24,14 +24,18 @@ public class CardRepetitionEntity {
 
     private UUID learningModuleId;
 
-    private double easeFactor;
+    @Builder.Default
+    private double easeFactor = 2.5;
 
-    private int repetitionCount;
+    @Builder.Default
+    private int repetitionCount = 0;
 
-    private int dayInterval;
+    @Builder.Default
+    private int dayInterval = 1;
 
-    private LocalDateTime lastRepetitionDate;
-
-    private LocalDateTime nextRepetitionDate;
+    @Builder.Default
+    private LocalDateTime lastRepetitionDate = LocalDateTime.now();
+    @Builder.Default
+    private LocalDateTime nextRepetitionDate = LocalDateTime.now();
 
 }
