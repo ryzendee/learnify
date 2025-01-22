@@ -6,7 +6,7 @@ spring:
   datasource:
     username: ${REPETITION_SERVICE_DS_USERNAME}
     password: ${REPETITION_SERVICE_DS_PASSWORD}
-    url: ${REPETITION_DS_URL}
+    url: ${REPETITION_SERVICE_DS_URL}
   jpa:
     hibernate:
       ddl-auto: validate
