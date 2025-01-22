@@ -14,7 +14,7 @@ public interface CardRepetitionJpaRepository extends JpaRepository<CardRepetitio
     @Query("""
     SELECT cre
     FROM CardRepetitionEntity cre
-    WHERE cre.learningModuleId =: learningModuleId
+    WHERE cre.learningModuleId = :learningModuleId
         AND cre.nextRepetitionDate <= CURRENT_TIMESTAMP
     """)
     List<CardRepetitionEntity> findActualRepetitionsByLearningModuleId(@Param("learningModuleId") UUID learningModuleId);
