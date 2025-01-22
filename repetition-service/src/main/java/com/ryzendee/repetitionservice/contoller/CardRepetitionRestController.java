@@ -3,6 +3,7 @@ package com.ryzendee.repetitionservice.contoller;
 import com.ryzendee.repetitionservice.dto.repetition.request.CardRepetitionUpdateRequest;
 import com.ryzendee.repetitionservice.dto.repetition.response.CardRepetitionGetResponse;
 import com.ryzendee.repetitionservice.service.CardRepetitionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,16 +15,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CardRepetitionRestController {
 
-    private CardRepetitionService cardRepetitionService;
+    private final CardRepetitionService cardRepetitionService;
 
-    @GetMapping("/{learningModuleId}/repetitions")
-    public List<CardRepetitionGetResponse> getCardRepetitionsForLearningModule(@PathVariable UUID learningModuleId) {
+    @GetMapping("/due")
+    public List<CardRepetitionGetResponse> getCardRepetitionsForLearningModule(@RequestParam UUID learningModuleId) {
         return cardRepetitionService.getCardsForRepetitionByLearningModuleId(learningModuleId);
     }
 
-    @PutMapping("/{cardId}")
+    @PutMapping("/{cardId}/review")
     public void updateCardRepetitionByCardId(@PathVariable UUID cardId,
-                                             @RequestBody CardRepetitionUpdateRequest request) {
+                                             @Valid @RequestBody CardRepetitionUpdateRequest request) {
         cardRepetitionService.updateCardRepetitionByCardId(cardId, request);
     }
 }
