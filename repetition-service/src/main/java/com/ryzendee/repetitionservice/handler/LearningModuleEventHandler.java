@@ -10,7 +10,11 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 @Component
-@KafkaListener(topics = "${topic.learning-module.events.name}")
+@KafkaListener(
+        id = "learningModuleEventHandler",
+        topics = "${topic.learning-module.events.name}",
+        groupId = "${spring.kafka.consumer.group-id}"
+)
 @Slf4j
 @RequiredArgsConstructor
 public class LearningModuleEventHandler {
@@ -18,7 +22,7 @@ public class LearningModuleEventHandler {
     private final CardRepetitionService cardRepetitionService;
 
     @KafkaHandler
-    public void handleLearningModuleDeletedEvent(@Payload LearningModuleDeletedEvent event) {
+    public void handleLearningModuleDeletedEvent(LearningModuleDeletedEvent event) {
         log.info("Received learning module deleted event: {}", event);
         cardRepetitionService.deleteAllCardRepetitionsByLearningModuleId(event.getLearningModuleId());
     }

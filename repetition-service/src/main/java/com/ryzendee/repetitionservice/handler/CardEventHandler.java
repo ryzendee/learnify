@@ -10,11 +10,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 @Component
-@KafkaListener(topics = "${topic.card.events.name}")
+@KafkaListener(
+        id ="cardEventHandler",
+        topics = "${topic.card.events.name}",
+        groupId = "${spring.kafka.consumer.group-id}"
+)
 @Slf4j
 @RequiredArgsConstructor
 public class CardEventHandler {
@@ -22,7 +25,7 @@ public class CardEventHandler {
     private final CardRepetitionService cardRepetitionService;
 
     @KafkaHandler
-    public void handleCardCreatedEvent(@Payload CardCreatedEvent event) {
+    public void handleCardCreatedEvent(CardCreatedEvent event) {
         try {
             log.info("Received card created event: {}", event);
             cardRepetitionService.createCardRepetition(event);
@@ -32,7 +35,7 @@ public class CardEventHandler {
     }
 
     @KafkaHandler
-    public void handleCardDeletedEvent(@Payload CardDeletedEvent event) {
+    public void handleCardDeletedEvent(CardDeletedEvent event) {
         try {
             log.info("Received card deleted event: {}", event);
             cardRepetitionService.deleteCardRepetitionByCardId(event.getCardId());
