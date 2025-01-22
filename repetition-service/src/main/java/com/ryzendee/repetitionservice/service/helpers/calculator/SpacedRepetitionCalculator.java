@@ -1,5 +1,7 @@
 package com.ryzendee.repetitionservice.service.helpers.calculator;
 
+import com.ryzendee.repetitionservice.dto.repetition.request.RepetitionUpdateRequest;
+import com.ryzendee.repetitionservice.dto.repetition.response.RepetitionUpdateResponse;
 import com.ryzendee.repetitionservice.entity.CardRepetitionEntity;
 import com.ryzendee.repetitionservice.enums.ReviewRating;
 import org.springframework.stereotype.Component;
@@ -26,14 +28,13 @@ public class SpacedRepetitionCalculator implements RepetitionCalculator {
      * The next review date is calculated based on the updated interval.
      */
     @Override
-    public CardRepetitionEntity updateCardRepetition(CardRepetitionEntity card, ReviewRating reviewRating) {
-        int dayInterval = card.getDayInterval();
-        double easeFactor = card.getEaseFactor();
-        int repetitionCount = card.getRepetitionCount();
+    public RepetitionUpdateResponse calculate(RepetitionUpdateRequest request) {
+        int dayInterval = request.dayInterval();
+        double easeFactor = request.easeFactor();
+        int repetitionCount = request.repetitionCount();
 
-        switch (reviewRating) {
+        switch (request.reviewRating()) {
             case AGAIN -> {
-                repetitionCount = 0;
                 dayInterval = 1;
                 easeFactor = Math.max(easeFactor - 0.2, MIN_EASE_FACTOR);
             }
@@ -48,13 +49,6 @@ public class SpacedRepetitionCalculator implements RepetitionCalculator {
             }
         }
 
-        return CardRepetitionEntity.builder()
-                .id(card.getId())
-                .repetitionCount(repetitionCount + 1)
-                .easeFactor(easeFactor)
-                .dayInterval(dayInterval)
-                .lastRepetitionDate(LocalDateTime.now())
-                .nextRepetitionDate(LocalDateTime.now().plusDays(dayInterval))
-                .build();
+        return new RepetitionUpdateResponse(repetitionCount + 1, easeFactor, dayInterval, LocalDateTime.now().plusDays(dayInterval));
     }
 }
