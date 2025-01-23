@@ -33,6 +33,6 @@ jobs:
           settings-path: ${{ github.workspace }}
 
       - name: Publish to GitHub Packages
-        run: mvn -f kafka-models/pom.xml --batch-mode deploy
+        run: mvn -f kafka-models/pom.xml -ntp --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
