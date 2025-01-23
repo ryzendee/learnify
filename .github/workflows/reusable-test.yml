@@ -30,9 +30,13 @@ jobs:
           distribution: ${{ inputs.java_distribution }}
           cache: ${{ inputs.cache_build_tool }}
           cache-dependency-path: ${{ inputs.project_dir }}/pom.xml
+          server-id: github
+          settings-path: ${{ github.workspace }}
 
       - name: Run Tests
-        run: mvn -f ${{ inputs.project_dir}}/pom.xml -ntp clean verify
+        run: mvn -f ${{ inputs.project_dir}}/pom.xml -s settings.xml -ntp clean verify
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v4

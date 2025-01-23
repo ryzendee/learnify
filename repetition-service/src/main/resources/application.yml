@@ -1,0 +1,45 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: repetition-service
+  datasource:
+    username: ${REPETITION_SERVICE_DS_USERNAME}
+    password: ${REPETITION_SERVICE_DS_PASSWORD}
+    url: ${REPETITION_SERVICE_DS_URL}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI}
+  kafka:
+    consumer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+      group-id: repetition-service
+      isolation-level: read_committed
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: com.learnify.kafka.models.*
+      auto-offset-reset: earliest
+
+springdoc:
+  api-docs:
+    enabled: false
+
+keycloak:
+  url:
+    token: ${KEYCLOAK_URL_TOKEN}
+    authorization: ${KEYCLOAK_URL_AUTHORIZATION}
+    
+topic:
+  card:
+    events:
+      name: card-events-topic
+  learning-module:
+    events:
+      name: learning-module-events-topic

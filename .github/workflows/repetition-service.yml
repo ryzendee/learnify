@@ -1,0 +1,29 @@
+name: Repetition Service Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'image-service/**'
+      - '.github/workflows/repetition-service.yml'
+      - '.github/workflows/reusable-*.yml'
+  pull_request:
+    branches:
+      - main
+      - dev
+    paths:
+      - 'repetition-service/**'
+      - '.github/workflows/repetition-service.yml'
+      - '.github/workflows/reusable-*.yml'
+
+jobs:
+  test:
+    uses: ./.github/workflows/reusable-test.yml
+    with:
+      project_dir: repetition-service
+      java_version: '17'
+      java_distribution: 'corretto'
+      cache_build_tool: 'maven'
+
+

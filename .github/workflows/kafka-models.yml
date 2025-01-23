@@ -1,0 +1,38 @@
+name: Kafka-models workflow
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'kafka-models/**'
+      - '.github/workflows/kafka-models.yml'
+      - '.github/workflows/reusable-*.yml'
+  pull_request:
+    branches:
+      - main
+      - dev
+    paths:
+      - 'kafka-models/**'
+      - '.github/workflows/kafka-models.yml'
+      - '.github/workflows/reusable-*.yml'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+          server-id: github
+          settings-path: ${{ github.workspace }}
+
+      - name: Publish to GitHub Packages
+        run: mvn -f kafka-models/pom.xml -s settings.xml -ntp --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
