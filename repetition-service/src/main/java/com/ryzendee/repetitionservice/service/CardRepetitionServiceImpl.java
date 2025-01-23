@@ -13,9 +13,9 @@ import com.ryzendee.repetitionservice.mapper.CardRepetitionGetResponseMapper;
 import com.ryzendee.repetitionservice.mapper.RepetitionUpdateRequestMapper;
 import com.ryzendee.repetitionservice.repository.CardRepetitionJpaRepository;
 import com.ryzendee.repetitionservice.service.helpers.calculator.RepetitionCalculator;
-import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,14 +38,7 @@ public class CardRepetitionServiceImpl implements CardRepetitionService {
     @Override
     public void createCardRepetition(CardCreatedEvent event) {
         CardRepetitionEntity mappedEntity = cardRepetitionEntityMapper.map(event);
-
-        try {
-            cardRepetitionJpaRepository.save(mappedEntity);
-        } catch (ConstraintViolationException ex) {
-            log.warn("Failed to save card repetition", ex);
-            throw new CardRepetitionSaveException("Failed to save card repetition", ex);
-        }
-
+        saveCardRepetition(mappedEntity);
         log.info("Created card repetition: {}", mappedEntity.getId());
     }
 
@@ -63,7 +56,7 @@ public class CardRepetitionServiceImpl implements CardRepetitionService {
         entityToUpdate.setDayInterval(repetitionUpdateResponse.updatedDayInterval());
         entityToUpdate.setRepetitionCount(repetitionUpdateResponse.updatedRepetitionCount());
 
-        cardRepetitionJpaRepository.save(entityToUpdate);
+        saveCardRepetition(entityToUpdate);
     }
 
     @Transactional
@@ -93,5 +86,14 @@ public class CardRepetitionServiceImpl implements CardRepetitionService {
     private CardRepetitionEntity getCardRepetitionByCardId(UUID cardId) {
         return cardRepetitionJpaRepository.findByCardId(cardId)
                 .orElseThrow(() -> new CardRepetitionNotFoundException("Card repetition for given cardId does not exists"));
+    }
+
+    private CardRepetitionEntity saveCardRepetition(CardRepetitionEntity cardRepetitionEntity) {
+        try {
+            return cardRepetitionJpaRepository.save(cardRepetitionEntity);
+        } catch (DataIntegrityViolationException ex) {
+            log.warn("Failed to save card repetition", ex);
+            throw new CardRepetitionSaveException("Failed to save card repetition", ex);
+        }
     }
 }
