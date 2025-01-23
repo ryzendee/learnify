@@ -18,6 +18,7 @@
 	<repositories>
 		<repository>
 			<id>github</id>
+			<name>Github Packages</name>
 			<url>https://maven.pkg.github.com/ryzendee/learnify</url>
 		</repository>
 	</repositories>
