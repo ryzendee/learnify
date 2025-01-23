@@ -2,16 +2,20 @@ package com.ryzendee.repetitionservice.service.helpers.calculator;
 
 import com.ryzendee.repetitionservice.dto.repetition.request.RepetitionUpdateRequest;
 import com.ryzendee.repetitionservice.dto.repetition.response.RepetitionUpdateResponse;
-import com.ryzendee.repetitionservice.entity.CardRepetitionEntity;
 import com.ryzendee.repetitionservice.enums.ReviewRating;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class SpacedRepetitionCalculator implements RepetitionCalculator {
 
     private static final double MIN_EASE_FACTOR = 1.3;
+
+    private final Map<ReviewRating, RepetitionFactor> repetitionFactorMap;
 
     /**
      * Updates the card repetition parameters based on the user's review rating.
@@ -29,26 +33,16 @@ public class SpacedRepetitionCalculator implements RepetitionCalculator {
      */
     @Override
     public RepetitionUpdateResponse calculate(RepetitionUpdateRequest request) {
-        int dayInterval = request.dayInterval();
-        double easeFactor = request.easeFactor();
-        int repetitionCount = request.repetitionCount();
+        RepetitionFactor repetitionFactor = repetitionFactorMap.get(request.reviewRating());
 
-        switch (request.reviewRating()) {
-            case AGAIN -> {
-                dayInterval = 1;
-                easeFactor = Math.max(easeFactor - 0.2, MIN_EASE_FACTOR);
-            }
-            case HARD -> {
-                dayInterval = (int) Math.round(dayInterval * 1.2);
-                easeFactor = Math.max(easeFactor - 0.15, MIN_EASE_FACTOR);
-            }
-            case NORMAL -> dayInterval = (int) Math.round(dayInterval * easeFactor);
-            case EASY -> {
-                dayInterval = (int) Math.round(dayInterval * easeFactor * 1.3);
-                easeFactor += 0.15;
-            }
-        }
+        int updatedDayInterval = (int) Math.round(request.dayInterval() * repetitionFactor.intervalMultiplier());
+        double updatedEaseFactor = Math.max(request.easeFactor() + repetitionFactor.easeFactor(), MIN_EASE_FACTOR);
 
-        return new RepetitionUpdateResponse(repetitionCount + 1, easeFactor, dayInterval, LocalDateTime.now().plusDays(dayInterval));
+        return new RepetitionUpdateResponse(
+                request.repetitionCount() + 1,
+                updatedEaseFactor,
+                updatedDayInterval,
+                LocalDateTime.now().plusDays(updatedDayInterval)
+        );
     }
 }
