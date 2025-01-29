@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'image-service/**'
+      - 'repetition-service/**'
       - '.github/workflows/repetition-service.yml'
       - '.github/workflows/reusable-*.yml'
   pull_request:
